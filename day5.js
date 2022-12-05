@@ -18,11 +18,10 @@ const parseData = ([columns, moves]) => [
 		.filter((_, i) => i < columns.length - 1)
 		.reduce((acc, line, i) => {
 			line
-				.replace(/    /g, '*')
-				.replace(/[\s\[\]]/g, '')
 				.split('')
-				.forEach((crate, k) => 
-					crate !== '*' && (acc[k] = acc[k] || []).push(crate))
+				.filter((_, n) => !((n - 1) % 4))
+				.forEach((crate, k) =>
+					crate !== ' ' && (acc[k] = acc[k] || []).push(crate))
 			return acc;
 		}, []),
 	moves
@@ -34,6 +33,7 @@ const parseData = ([columns, moves]) => [
 
 const moveCrates = sameOrder => {
 	const [columns, moves] = parseData(data);
+	console.log(parseData(data))
 	moves.forEach(([count, from, to]) => {
 		const items = columns[from - 1].slice(0, count);
 		columns[from - 1] = columns[from - 1].slice(count);
