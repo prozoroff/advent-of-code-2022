@@ -13,24 +13,24 @@ move 1 from 1 to 2
 .map(p => p.split('\n')
 .filter(p => p));
 
-const parseData = data => data
-	.map((part, i) => i
-		? part
-			.map(line => line
-				.split(' ')
-				.filter((_, i) => i % 2)
-				.map(str => parseInt(str)))
-		: part
-			.filter((_, i) => i < part.length - 1)
-			.reduce((acc, line, i) => {
-				line
-					.replace(/    /g, '*')
-					.replace(/[\s\[\]]/g, '')
-					.split('')
-					.forEach((crate, k) => 
-						crate !== '*' && (acc[k] = acc[k] || []).push(crate))
-				return acc;
-			}, []));
+const parseData = ([columns, moves]) => [
+	columns
+		.filter((_, i) => i < columns.length - 1)
+		.reduce((acc, line, i) => {
+			line
+				.replace(/    /g, '*')
+				.replace(/[\s\[\]]/g, '')
+				.split('')
+				.forEach((crate, k) => 
+					crate !== '*' && (acc[k] = acc[k] || []).push(crate))
+			return acc;
+		}, []),
+	moves
+		.map(line => line
+			.split(' ')
+			.filter((_, i) => i % 2)
+			.map(str => parseInt(str)))
+];
 
 const moveCrates = sameOrder => {
 	const [columns, moves] = parseData(data);
