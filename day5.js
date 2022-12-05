@@ -33,7 +33,6 @@ const parseData = ([columns, moves]) => [
 
 const moveCrates = sameOrder => {
 	const [columns, moves] = parseData(data);
-	console.log(parseData(data))
 	moves.forEach(([count, from, to]) => {
 		const items = columns[from - 1].slice(0, count);
 		columns[from - 1] = columns[from - 1].slice(count);
