@@ -42,11 +42,10 @@ const countVisible =
         sum + row.reduce((rowSum, tree, i) =>
             rowSum + (isVisible(i, j) ? 1 : 0), 0), 0);
 
-const scenicScores =
-    rows.reduce((arr, row, j) => [...arr,
-        ...row.reduce((rowArr, tree, i) =>
-            [...rowArr, scenicScore(i, j)], [])], []);
-
+const scenicScores = rows
+    .map((row, j) => row
+        .map((_, i) => scenicScore(i, j)))
+    .flat();
 
 console.log('First puzzle answer:', countVisible);
 console.log('Second puzzle answer:', Math.max(...scenicScores));
