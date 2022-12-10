@@ -27,7 +27,7 @@ const execute = (command, cycles) => {
 
 const commands = data
     .map(([name, param]) => name === 'noop'
-        ? execute(() => {})
+        ? execute(() => {}, 1)
         : execute(() => x += parseInt(param), 2));
 
 while (commands.length) {
