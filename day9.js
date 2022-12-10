@@ -13,12 +13,10 @@ R 2
 .map(line => line.split(' '))
 .map(([direction, count]) => new Array(parseInt(count)).fill(direction)).flat()
 
-const moveHead = (rope, direction) => ({
-    R: coord => coord[0] += 1,
-    L: coord => coord[0] -= 1,
-    U: coord => coord[1] += 1,
-    D: coord => coord[1] -= 1
-})[direction](rope[0]);
+const moveHead = (rope, dir) => {
+    'LR'.includes(dir) && (rope[0][0] += 'LR'.indexOf(dir) ? 1 : -1);
+    'DU'.includes(dir) && (rope[0][1] += 'DU'.indexOf(dir) ? 1 : -1);
+}
 
 const moveChain = (rope, i) => {
     const change = [rope[i - 1][0] - rope[i][0], rope[i - 1][1] - rope[i][1]];
