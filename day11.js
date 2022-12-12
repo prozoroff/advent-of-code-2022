@@ -69,8 +69,7 @@ class Monkey {
     operate (reducer) {
         const {items, operation} = this.data
         while (items.length) {
-            const item = items.shift();
-            const newItem = reducer(operation(item));
+            const newItem = reducer(operation(items.shift()));
             const monkeyId = this.check(newItem);
             this.flock.find(monkey => monkey.id === monkeyId).addItem(newItem);
             this.counter++;
