@@ -38,33 +38,29 @@ const coords = data.map((line) => {
   };
 });
 
-const getRangesAt = y => {
-  return coords
-    .filter(({sensor, distance}) =>
-      sensor[1] - distance <= y && sensor[1] + distance >= y)
-    .reduce((ranges, {sensor, distance}) => {
-      const range = [
-        sensor[0] - distance + Math.abs(y - sensor[1]),
-        sensor[0] + distance - Math.abs(y - sensor[1])
-      ];
-      const includesMin = ranges.find(r => r[0] - 1 <= range[0] && r[1] + 1 >= range[0]);
-      const includesMax = ranges.find(r => r[0] - 1 <= range[1] && r[1] + 1 >= range[1]);
-      const newRange = [
-        includesMin ? Math.min(includesMin[0], range[0]) : range[0],
-        includesMax ? Math.max(includesMax[1], range[1]) : range[1]
-      ];
+const getRangesAt = y => coords
+  .filter(({sensor, distance}) =>
+    sensor[1] - distance <= y && sensor[1] + distance >= y)
+  .reduce((ranges, {sensor, distance}) => {
+    const range = [
+      sensor[0] - distance + Math.abs(y - sensor[1]),
+      sensor[0] + distance - Math.abs(y - sensor[1])
+    ];
+    const includesMin = ranges.find(r => r[0] - 1 <= range[0] && r[1] + 1 >= range[0]);
+    const includesMax = ranges.find(r => r[0] - 1 <= range[1] && r[1] + 1 >= range[1]);
+    const newRange = [
+      includesMin ? Math.min(includesMin[0], range[0]) : range[0],
+      includesMax ? Math.max(includesMax[1], range[1]) : range[1]
+    ];
 
-      return [
-        newRange,
-        ...ranges.filter(range => !(range[0] >= newRange[0] && range[1] <= newRange[1]))
-      ];
-    }, []);
-}
+    return [
+      newRange,
+      ...ranges.filter(range => !(range[0] >= newRange[0] && range[1] <= newRange[1]))
+    ];
+  }, []);
 
-const getCoverageAt = y => {
-  return getRangesAt(y)
-    .reduce((acc, range) => acc + range[1] - range[0], 0)
-};
+const getCoverageAt = y => getRangesAt(y)
+  .reduce((acc, range) => acc + range[1] - range[0], 0);
 
 const getTuningFrequencyWithin = limit => {
   const yCoord = new Array(limit).fill(true)
