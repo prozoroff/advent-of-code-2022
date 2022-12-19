@@ -75,17 +75,16 @@ while (queue.length) {
     ]);
 }
 
-const visitedArr = Array.from(visited)
-    .map(line => line
-    .split(',')
-    .map(side => parseInt(side)));
-
 const all = cubes.reduce((acc, cube) => {
     return acc + 6 - countConnected(cube, cubes);
 }, 0)
 
-const external = visitedArr.reduce((acc, cube) => {
-    return acc + countConnected(cube, cubes);
+const external = Array.from(visited)
+    .map(line => line
+    .split(',')
+    .map(side => parseInt(side)))
+    .reduce((acc, cube) => {
+        return acc + countConnected(cube, cubes);
 }, 0)
 
 console.log('First puzzle answer:', all);
