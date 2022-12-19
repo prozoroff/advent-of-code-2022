@@ -56,7 +56,7 @@ const inBox = ([x, y, z]) =>
     && z <= maxZ + 1;
 
 const visited = new Set();
-const lava = new Set(cubes.map((x) => x.join(",")));
+const lava = new Set(cubes.map(coord => coord.join(',')));
 const queue = [[minX - 1, minY - 1, minZ - 1]];
 
 while (queue.length) {
