@@ -29,17 +29,11 @@ hmdt: 32
 
 
 const getRootResult = data => {
-    while (Array.isArray(data.root)) {
-        Object.keys(data).map(id => {
-            if (!isFinite(data[id])) {
-                const [a, action, b] = data[id];
-                if (isFinite(data[a]) && isFinite(data[b])){
-                    data[id] = eval(`${data[a]} ${action} ${data[b]}`);
-                }
-            }
-        })
-    }
-    return data.root;
+    const get = id => Array.isArray(data[id])
+        ? `(${data[id].map(get).join('')})`
+        : data[id] ?? id;
+
+    return eval(get('root'))
 }
 
 const getHumnValue = data => {
@@ -49,11 +43,12 @@ const getHumnValue = data => {
     let sign = 1;
     let dataCopy = {};
     let prevResult;
+    let result;
 
-    while (dataCopy.root !== 0) {
+    while (result !== 0) {
         dataCopy = {...data};
         dataCopy.humn = guess;
-        const result = getRootResult(dataCopy);
+        result = getRootResult(dataCopy);
         
         if (prevResult * result < 0) {
             sign *= -1;
@@ -68,7 +63,6 @@ const getHumnValue = data => {
     
     return guess;
 }
-
 
 console.log('First puzzle answer:', getRootResult({...data}));
 console.log('Second puzzle answer:', getHumnValue({...data}));
